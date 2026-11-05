@@ -23,5 +23,29 @@ st.write(
 st.write(
     "Elles ont été nettoyées et enrichies avec les informations sur les quartiers et la météo."
 )
-st.write(f"Le fichier propre compte {len(donnees)} lignes.")
-st.dataframe(donnees.head(10), hide_index=True)
+
+communes = sorted(donnees["commune"].dropna().unique())
+communes_choisies = st.sidebar.multiselect(
+    "Communes",
+    options=communes,
+    default=communes,
+)
+
+annees = sorted(donnees["annee"].dropna().unique())
+annee_choisie = st.sidebar.selectbox(
+    "Année",
+    options=annees,
+    index=annees.index(2025),
+)
+
+if not communes_choisies:
+    st.warning("Choisissez au moins une commune pour afficher les données.")
+    donnees_filtrees = donnees.iloc[0:0]
+else:
+    donnees_filtrees = donnees.loc[
+        donnees["commune"].isin(communes_choisies)
+        & (donnees["annee"] == annee_choisie)
+    ]
+
+st.write(f"{len(donnees_filtrees)} lignes pour les filtres sélectionnés.")
+st.dataframe(donnees_filtrees.head(10), hide_index=True)
