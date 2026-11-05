@@ -48,4 +48,19 @@ else:
     ]
 
 st.write(f"{len(donnees_filtrees)} lignes pour les filtres sélectionnés.")
+
+if donnees_filtrees.empty:
+    valeurs_indicateurs = ("—", "—", "—")
+else:
+    valeurs_indicateurs = (
+        f"{donnees_filtrees['kwh'].sum() / 1_000_000:.2f} millions de kWh",
+        f"{donnees_filtrees['kwh_par_abonne'].mean():.1f} kWh",
+        f"{donnees_filtrees['heures_courant'].mean():.1f} heures",
+    )
+
+col_kwh, col_abonne, col_heures = st.columns(3)
+col_kwh.metric("Consommation totale", valeurs_indicateurs[0])
+col_abonne.metric("Consommation par abonné", valeurs_indicateurs[1])
+col_heures.metric("Heures de courant par jour", valeurs_indicateurs[2])
+
 st.dataframe(donnees_filtrees.head(10), hide_index=True)
