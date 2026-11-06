@@ -200,4 +200,13 @@ with onglet_records:
             f"({premier['mois']}) : {premier['kwh']:.0f} kWh."
         )
 
-st.dataframe(donnees_filtrees.head(10), hide_index=True)
+st.markdown(
+    """
+    ### Conclusion
+
+    Dans les quartiers résidentiels, la consommation par abonné est davantage associée aux heures de courant (corrélation de 0,76) qu'à la température (−0,15). Les données suggèrent donc un lien plus fort avec la disponibilité du courant qu'avec la chaleur. Une corrélation ne prouve toutefois pas une relation de cause à effet et ne permet pas, à elle seule, d'expliquer les variations observées.
+    """
+)
+
+with st.expander("Afficher les données filtrées"):
+    st.dataframe(donnees_filtrees, hide_index=True)
